@@ -118,8 +118,8 @@ class Triangle extends Thing {
 class Rectangle extends Thing {
     constructor(pos) {
         super(pos);
-        this.w = random(10, 30);
-        this.h = random(10, 30);
+        this.w = random(1, 3);
+        this.h = random(1, 3);
         this.clr = colorPalette[floor(random(0,4))];
     }
 
