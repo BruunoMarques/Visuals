@@ -51,7 +51,7 @@ function draw() {
 }
 
 
-class Thing {
+    class Thing {
     constructor(pos) {
         this.pos = pos;
         this.vel = createVector();

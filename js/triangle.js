@@ -16,8 +16,6 @@ function preload() {
 
 function setup() {
     createCanvas(windowWidth, windowHeight, WEBGL);
-
-
 }
 
 
@@ -33,7 +31,6 @@ function draw() {
     var treble = fft.getEnergy(100, 150);
     var mid = fft.getEnergy("mid");
 
-    console.log(bass);
     let midFlip = 8;
 
     if(mid > 150 ){
@@ -46,12 +43,10 @@ function draw() {
     var basebump = bass/100+4;
 
     var rotate = treble /100;
-    rotateX(frameCount * 0.1);
-    rotateZ(frameCount * 0.005);
+    rotateX(frameCount * 1);
+    rotateZ(frameCount * 1);
 
-    cone(windowWidth/basebump, windowHeight/1.5, midFlip,1);
-
-
+    cone(windowWidth/basebump, windowHeight/1.5, 1,1);
 }
 
 

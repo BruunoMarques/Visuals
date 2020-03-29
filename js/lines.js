@@ -11,17 +11,15 @@ function preload() {
     fft = new p5.FFT();
     fft.setInput(mic);
 
-    img = loadImage('images/aphex-main.jpg');
 }
 
 
 
-function setup() {
-    createCanvas(windowWidth, windowHeight);
+    function setup() {
+        createCanvas(windowWidth, windowHeight);
 
-    pieces = 4;
-    radius = windowHeight / 4;
-    image(img, 0, 0);
+        pieces = 4;
+        radius = windowHeight / 4;
 
 }
 
