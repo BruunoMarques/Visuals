@@ -7,6 +7,12 @@ let img;
 
 let mic;
 
+let framerateval = 30;
+
+let currentBeatframe;
+
+let bpmValue = 130;
+
 function preload() {
     mic = new p5.AudioIn();
     mic.start();
@@ -20,49 +26,63 @@ function preload() {
 
 function setup() {
     createCanvas(windowWidth, windowHeight, WEBGL);
+    frameRate(framerateval);
 }
 
 function draw() {
-    frameRate(30);
     fft.analyze();
-    canvasReset(1);
-    if(fft.getEnergy("bass") > 100){
-        //colourStrobe();
-    }
-    imageWash();
-    //toruspin();
+    currentBeatframe = bpmtorate(bpmValue);
+    animationManager(true,false);
 }
 
+function animationManager(onBeat, offBeat) {
+    if(onBeat === true){
+
+        if (frameCount%currentBeatframe === 0){
+            console.log(currentBeatframe);
+            //colourStrobe();
+            rectangles();
+        }
+
+    }
+
+}
 
 function colourStrobe() {
-    let colourToStrobe = color(colorPalette[getRndInteger(0,3)]);
+    let colourToStrobe = color(colorPaletteStrobe[getRndInteger(0,3)]);
     fill(colourToStrobe);
-
     rect(-windowWidth, -windowHeight, windowWidth*2, windowHeight*2);
 }
 
 
-function canvasReset(rate) {
+function rectangles() {
+    let colourToStrobe = color(colorPaletteStrobe[getRndInteger(0,3)]);
+    fill(colourToStrobe);
+    rect(0, -windowHeight, windowWidth/3, 2*windowHeight);
+    rect(-windowWidth/2, -windowHeight, windowWidth/3, 2*windowHeight);
+    //rect(-windowWidth, -windowHeight, windowWidth*2, windowHeight*2);
+}
 
+
+function canvasReset() {
+    background(colorPalette[0]);
+
+}
+
+function canvasResetRate(rate) {
     if(frameCount%rate === 0){
         background(colorPalette[0]);
     }
 }
 
-function toruspin() {
-    fill(colorPalette[2]);
-    noStroke();
-    sphere(windowHeight/5);
-    erase();
-    rotateY(frameCount * 0.2);
-    translate(0, 0, 40);
-    torus(windowHeight/4, 15,3,12);
-    noErase();
+
+function bpmtorate(bpm){
+    return Math.round(framerateval/ (bpm/60));
 }
 
 function imageWash(){
     let coords = {x:getRndInteger(-windowWidth,windowWidth),y:getRndInteger(-windowHeight,windowHeight)};
-    if(frameCount%2 === 0){
+    if(frameCount%1 === 0){
         things.push(new imageaphex(img,coords.x,coords.y));
     }
 }
@@ -72,9 +92,6 @@ function getRndInteger(min, max) {
     return Math.floor(Math.random() * (max - min + 1) ) + min;
 }
 
-function windowResized() {
-    resizeCanvas(windowWidth, windowHeight);
-}
 
 class imageaphex{
     constructor(img, x, y) {
