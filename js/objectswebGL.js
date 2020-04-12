@@ -1,7 +1,7 @@
 let things = [];
 var colorPalette = ["#000000", "#fffdf5", "#6b0b0b", "#4b4b4b"];
 
-var colorPaletteStrobe = ["#42060b", "#ff1c13", "#6b0b0b", "#ffffff"];
+var colorPaletteStrobe = ["#42060b", "#ff1c13", "#6b0b0b", "#000000"];
 
 let img;
 
@@ -27,21 +27,23 @@ function preload() {
 function setup() {
     createCanvas(windowWidth, windowHeight, WEBGL);
     frameRate(framerateval);
+    background(colorPalette[0]);
 }
 
 function draw() {
     fft.analyze();
     currentBeatframe = bpmtorate(bpmValue);
     animationManager(true,false);
+    noFill();
+    rotatingCube(fft.getEnergy("bass"));
 }
 
 function animationManager(onBeat, offBeat) {
     if(onBeat === true){
 
         if (frameCount%currentBeatframe === 0){
-            console.log(currentBeatframe);
-            //colourStrobe();
-            rectangles();
+            colourStrobe();
+            //background(colorPalette[0]);
         }
 
     }
@@ -51,18 +53,32 @@ function animationManager(onBeat, offBeat) {
 function colourStrobe() {
     let colourToStrobe = color(colorPaletteStrobe[getRndInteger(0,3)]);
     fill(colourToStrobe);
-    rect(-windowWidth, -windowHeight, windowWidth*2, windowHeight*2);
+
+    rect(-2*windowWidth, -2*windowHeight, windowWidth*4, windowHeight*4);
 }
 
 
-function rectangles() {
-    let colourToStrobe = color(colorPaletteStrobe[getRndInteger(0,3)]);
-    fill(colourToStrobe);
-    rect(0, -windowHeight, windowWidth/3, 2*windowHeight);
-    rect(-windowWidth/2, -windowHeight, windowWidth/3, 2*windowHeight);
-    //rect(-windowWidth, -windowHeight, windowWidth*2, windowHeight*2);
-}
 
+function rotatingCube(fftvalue) {
+
+   // background(colorPalette[0]);
+
+    rotateY(PI / 6);
+    stroke(153);
+    box(windowHeight/2.5 * fftvalue/100);
+
+    let rad = millis() / 1000;
+    // Set rotation angles
+    let ct = cos(rad);
+    let st = sin(rad);
+    // Matrix for rotation around the Y axis
+    applyMatrix(  ct, 0.0,  st,  0.0,
+        0.0, 1.0, 0.0,  0.0,
+        -st, 0.0,  ct,  0.0,
+        0.0, 0.0, 0.0,  1.0);
+    stroke(255);
+    box(500);
+}
 
 function canvasReset() {
     background(colorPalette[0]);
